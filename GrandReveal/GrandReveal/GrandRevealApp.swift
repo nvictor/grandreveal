@@ -16,7 +16,7 @@ struct GrandRevealApp: App {
             ContentView()
                 .environmentObject(model)
         }
-        .defaultSize(width: 1440, height: 810)
+        .defaultSize(width: 1280, height: 720)
         .commands {
             CommandMenu("GrandReveal") {
                 Button("Open Deck") {

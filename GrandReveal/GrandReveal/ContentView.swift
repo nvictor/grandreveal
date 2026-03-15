@@ -127,7 +127,7 @@ struct ContentView: View {
             }
         }
         .background(WindowAccessorView())
-        .frame(minWidth: 1280, minHeight: 720)
+        .frame(minWidth: 960, minHeight: 540)
         .background(Color.black.opacity(0.95))
     }
 }
@@ -335,7 +335,7 @@ private final class WindowAccessorNSView: NSView {
         }
 
         let aspectRatio = NSSize(width: 16, height: 9)
-        let minimumContentSize = NSSize(width: 1280, height: 720)
+        let minimumContentSize = NSSize(width: 960, height: 540)
 
         if window.contentAspectRatio != aspectRatio {
             window.contentAspectRatio = aspectRatio
