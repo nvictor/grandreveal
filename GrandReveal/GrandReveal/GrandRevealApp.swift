@@ -18,7 +18,7 @@ struct GrandRevealApp: App {
         }
         .defaultSize(width: 1280, height: 720)
         .commands {
-            CommandMenu("GrandReveal") {
+            CommandGroup(after: .newItem) {
                 Button("Open Deck") {
                     model.openDeckPicker()
                 }
@@ -29,20 +29,21 @@ struct GrandRevealApp: App {
                 }
                 .keyboardShortcut("d")
 
-                Divider()
-
-                Button("Reload Deck") {
-                    model.reload()
-                }
-                .keyboardShortcut("r")
-                .disabled(model.activeDeck == nil)
-
                 Button("Return to Launcher") {
                     model.reopenLauncher()
                 }
                 .keyboardShortcut(.escape, modifiers: [])
                 .disabled(model.activeDeck == nil)
             }
+
+            CommandGroup(after: .pasteboard) {
+                Button("Reload Deck") {
+                    model.reload()
+                }
+                .keyboardShortcut("r")
+                .disabled(model.activeDeck == nil)
+            }
+
         }
     }
 }
