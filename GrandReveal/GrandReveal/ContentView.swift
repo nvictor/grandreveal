@@ -24,13 +24,6 @@ final class GrandRevealModel: ObservableObject {
         }
     }
 
-    func loadDemo() {
-        clearSecurityScopedAccess()
-        errorMessage = nil
-        activeDeck = .bundledDemo
-        reloadID = UUID()
-    }
-
     func reopenLauncher() {
         clearSecurityScopedAccess()
         activeDeck = nil
@@ -121,7 +114,6 @@ struct ContentView: View {
                 LaunchPadView(
                     errorMessage: model.errorMessage,
                     onOpenDeck: model.openDeckPicker,
-                    onLoadDemo: model.loadDemo,
                     onDropDeck: model.loadDeck
                 )
             }
@@ -150,78 +142,35 @@ private struct PresentationView: View {
 private struct LaunchPadView: View {
     let errorMessage: String?
     let onOpenDeck: () -> Void
-    let onLoadDemo: () -> Void
     let onDropDeck: (URL) -> Void
 
     @State private var isTargeted = false
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.06, green: 0.08, blue: 0.12),
-                    Color(red: 0.12, green: 0.07, blue: 0.04),
-                    Color(red: 0.03, green: 0.04, blue: 0.08)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            Color(red: 0.08, green: 0.09, blue: 0.11)
+                .ignoresSafeArea()
 
-            VStack(spacing: 26) {
-                VStack(spacing: 10) {
-                    Text("GrandReveal")
-                        .font(.system(size: 34, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white)
-
-                    Text("Load a Reveal.js deck or open the bundled demo.")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.72))
-                }
-
-                HStack(spacing: 22) {
-                    LaunchTile(
-                        title: "Open Deck",
-                        subtitle: "Drop a folder or HTML entrypoint",
-                        icon: "square.and.arrow.down",
-                        action: onOpenDeck
-                    )
-
-                    LaunchTile(
-                        title: "Load Demo",
-                        subtitle: "Open the bundled Reveal.js demo deck",
-                        icon: "sparkles.rectangle.stack",
-                        action: onLoadDemo
-                    )
-                }
-                .padding(.top, 12)
+            ContentUnavailableView {
+                Text("GrandReveal")
+            } description: {
+                Text("Load a Reveal.js deck folder or HTML entrypoint.")
+            } actions: {
+                Button("Open Deck", action: onOpenDeck)
+                    .buttonStyle(.borderedProminent)
 
                 if let errorMessage {
                     Text(errorMessage)
                         .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.88))
-                        .padding(.horizontal, 18)
-                        .padding(.vertical, 12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(Color.red.opacity(0.20))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .stroke(Color.red.opacity(0.35), lineWidth: 1)
-                                )
-                        )
+                        .foregroundStyle(.white.opacity(0.82))
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 8)
                 }
             }
-            .padding(34)
-            .background(
-                RoundedRectangle(cornerRadius: 30, style: .continuous)
-                    .fill(.white.opacity(0.07))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 30, style: .continuous)
-                            .stroke(isTargeted ? .orange.opacity(0.9) : .white.opacity(0.08), lineWidth: 2)
-                    )
-            )
+            .symbolRenderingMode(.hierarchical)
+            .foregroundStyle(.white, .white.opacity(0.72))
             .padding(40)
+            .background(isTargeted ? Color.white.opacity(0.04) : .clear)
         }
         .onDrop(of: [UTType.fileURL], isTargeted: $isTargeted) { providers in
             guard let provider = providers.first else {
@@ -238,60 +187,6 @@ private struct LaunchPadView: View {
 
             return true
         }
-    }
-}
-
-private struct LaunchTile: View {
-    let title: String
-    let subtitle: String
-    let icon: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 16) {
-                Image(systemName: icon)
-                    .font(.system(size: 44, weight: .medium))
-                    .foregroundStyle(.white)
-                    .frame(width: 82, height: 82)
-                    .background(
-                        RoundedRectangle(cornerRadius: 22, style: .continuous)
-                            .fill(
-                                LinearGradient(
-                                    colors: [
-                                        Color.white.opacity(0.18),
-                                        Color.white.opacity(0.05)
-                                    ],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    )
-
-                VStack(spacing: 6) {
-                    Text(title)
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white)
-
-                    Text(subtitle)
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.72))
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: 220)
-                }
-            }
-            .frame(maxWidth: .infinity, minHeight: 240)
-            .padding(24)
-            .background(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(.black.opacity(0.22))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .stroke(.white.opacity(0.10), lineWidth: 1)
-                    )
-            )
-        }
-        .buttonStyle(.plain)
     }
 }
 

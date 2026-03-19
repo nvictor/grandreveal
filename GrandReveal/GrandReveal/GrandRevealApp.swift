@@ -24,11 +24,6 @@ struct GrandRevealApp: App {
                 }
                 .keyboardShortcut("o")
 
-                Button("Load Demo") {
-                    model.loadDemo()
-                }
-                .keyboardShortcut("d")
-
                 Button("Return to Launcher") {
                     model.reopenLauncher()
                 }
