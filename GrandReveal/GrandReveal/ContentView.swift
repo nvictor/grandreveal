@@ -99,6 +99,27 @@ final class GrandRevealModel: ObservableObject {
     }
 }
 
+private struct GrandRevealFocusedModelKey: FocusedValueKey {
+    typealias Value = GrandRevealModel
+}
+
+extension FocusedValues {
+    var grandRevealFocusedModel: GrandRevealModel? {
+        get { self[GrandRevealFocusedModelKey.self] }
+        set { self[GrandRevealFocusedModelKey.self] = newValue }
+    }
+}
+
+struct GrandRevealWindowRootView: View {
+    @StateObject private var model = GrandRevealModel()
+
+    var body: some View {
+        ContentView()
+            .environmentObject(model)
+            .focusedSceneValue(\.grandRevealFocusedModel, model)
+    }
+}
+
 struct ContentView: View {
     @EnvironmentObject private var model: GrandRevealModel
 
