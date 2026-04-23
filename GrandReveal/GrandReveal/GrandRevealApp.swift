@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct GrandRevealApp: App {
     @FocusedValue(\.grandRevealFocusedModel) private var focusedModel
+    @StateObject private var updater = AppUpdater()
 
     var body: some Scene {
         WindowGroup {
@@ -39,6 +40,9 @@ struct GrandRevealApp: App {
                 .disabled(focusedModel?.activeDeck == nil)
             }
 
+        }
+        .commands {
+            CheckForUpdatesCommands(updater: updater)
         }
     }
 }
