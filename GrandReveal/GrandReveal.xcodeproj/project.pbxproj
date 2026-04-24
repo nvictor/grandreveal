@@ -14,9 +14,22 @@
 		570ACECB2F67587D008AEDC2 /* GrandReveal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GrandReveal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		570ACED82F67587E008AEDC2 /* Exceptions for "GrandReveal" folder in "GrandReveal" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 570ACECA2F67587D008AEDC2 /* GrandReveal */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		570ACECD2F67587D008AEDC2 /* GrandReveal */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				570ACED82F67587E008AEDC2 /* Exceptions for "GrandReveal" folder in "GrandReveal" target */,
+			);
 			path = GrandReveal;
 			sourceTree = "<group>";
 		};
