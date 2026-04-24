@@ -15,7 +15,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		570ACED82F67587E008AEDC2 /* Exceptions for "GrandReveal" folder in "GrandReveal" target */ = {
+		570ACED92F67587E008AEDC2 /* Exceptions for "GrandReveal" folder in "GrandReveal" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -28,7 +28,7 @@
 		570ACECD2F67587D008AEDC2 /* GrandReveal */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				570ACED82F67587E008AEDC2 /* Exceptions for "GrandReveal" folder in "GrandReveal" target */,
+				570ACED92F67587E008AEDC2 /* Exceptions for "GrandReveal" folder in "GrandReveal" target */,
 			);
 			path = GrandReveal;
 			sourceTree = "<group>";
