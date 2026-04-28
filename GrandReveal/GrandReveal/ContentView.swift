@@ -57,6 +57,7 @@ final class GrandRevealModel: ObservableObject {
             let source = try DeckResolver.resolve(url: url)
             clearSecurityScopedAccess()
             activateSecurityScopedAccess(for: source)
+            NSDocumentController.shared.noteNewRecentDocumentURL(source.recentDocumentURL)
             errorMessage = nil
             activeDeck = source
             reloadID = UUID()
@@ -75,7 +76,7 @@ final class GrandRevealModel: ObservableObject {
     }
 
     private func activateSecurityScopedAccess(for source: DeckSource) {
-        guard case let .local(entrypointURL, readAccessURL, _) = source else {
+        guard case let .local(entrypointURL, readAccessURL, _, _) = source else {
             return
         }
 
@@ -117,6 +118,9 @@ struct GrandRevealWindowRootView: View {
         ContentView()
             .environmentObject(model)
             .focusedSceneValue(\.grandRevealFocusedModel, model)
+            .onAppear {
+                RecentDeckCoordinator.shared.register(model)
+            }
     }
 }
 

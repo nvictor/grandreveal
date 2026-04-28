@@ -36,7 +36,8 @@ enum DeckResolver {
                 return .local(
                     entrypointURL: candidateURL,
                     readAccessURL: url,
-                    displayName: url.lastPathComponent
+                    displayName: url.lastPathComponent,
+                    recentDocumentURL: url
                 )
             }
         }
@@ -55,7 +56,8 @@ enum DeckResolver {
             return .local(
                 entrypointURL: entrypointURL,
                 readAccessURL: url,
-                displayName: url.lastPathComponent
+                displayName: url.lastPathComponent,
+                recentDocumentURL: url
             )
         }
 
@@ -71,7 +73,8 @@ enum DeckResolver {
         return .local(
             entrypointURL: url,
             readAccessURL: url.deletingLastPathComponent(),
-            displayName: url.lastPathComponent
+            displayName: url.lastPathComponent,
+            recentDocumentURL: url
         )
     }
 }

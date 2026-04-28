@@ -13,18 +13,25 @@ struct DeckLoadContext {
 }
 
 enum DeckSource: Equatable {
-    case local(entrypointURL: URL, readAccessURL: URL, displayName: String)
+    case local(entrypointURL: URL, readAccessURL: URL, displayName: String, recentDocumentURL: URL)
 
     var title: String {
         switch self {
-        case let .local(_, _, displayName):
+        case let .local(_, _, displayName, _):
             return displayName
+        }
+    }
+
+    var recentDocumentURL: URL {
+        switch self {
+        case let .local(_, _, _, recentDocumentURL):
+            return recentDocumentURL
         }
     }
 
     func makeLoadContext(bundle: Bundle = .main) throws -> DeckLoadContext {
         switch self {
-        case let .local(entrypointURL, readAccessURL, _):
+        case let .local(entrypointURL, readAccessURL, _, _):
             return DeckLoadContext(entrypointURL: entrypointURL, readAccessURL: readAccessURL)
         }
     }
