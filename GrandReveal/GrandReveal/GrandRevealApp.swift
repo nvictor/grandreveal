@@ -62,13 +62,14 @@ final class RecentDeckCoordinator {
         openPendingURLs()
     }
 
-    func open(_ url: URL) {
+    @discardableResult
+    func open(_ url: URL) -> Bool {
         guard let model else {
             pendingURLs.append(url)
-            return
+            return true
         }
 
-        model.loadDeck(at: url)
+        return model.loadDeck(at: url)
     }
 
     private func openPendingURLs() {
@@ -89,14 +90,23 @@ final class RecentDeckCoordinator {
 final class GrandRevealAppDelegate: NSObject, NSApplicationDelegate {
     func application(_ sender: NSApplication, openFile filename: String) -> Bool {
         RecentDeckCoordinator.shared.open(URL(fileURLWithPath: filename))
-        return true
     }
 
     func application(_ sender: NSApplication, openFiles filenames: [String]) {
+        var didOpenAllFiles = true
+
         for filename in filenames {
-            RecentDeckCoordinator.shared.open(URL(fileURLWithPath: filename))
+            if RecentDeckCoordinator.shared.open(URL(fileURLWithPath: filename)) == false {
+                didOpenAllFiles = false
+            }
         }
 
-        sender.reply(toOpenOrPrint: .success)
+        sender.reply(toOpenOrPrint: didOpenAllFiles ? .success : .failure)
+    }
+
+    func application(_ application: NSApplication, open urls: [URL]) {
+        for url in urls {
+            RecentDeckCoordinator.shared.open(url)
+        }
     }
 }

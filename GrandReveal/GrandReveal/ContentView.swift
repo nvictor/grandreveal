@@ -52,7 +52,8 @@ final class GrandRevealModel: ObservableObject {
         }
     }
 
-    func loadDeck(at url: URL) {
+    @discardableResult
+    func loadDeck(at url: URL) -> Bool {
         do {
             let source = try DeckResolver.resolve(url: url)
             clearSecurityScopedAccess()
@@ -61,11 +62,13 @@ final class GrandRevealModel: ObservableObject {
             errorMessage = nil
             activeDeck = source
             reloadID = UUID()
+            return true
         } catch {
             errorMessage = DeckResolver.message(for: error)
             if activeDeck != nil {
                 activeDeck = nil
             }
+            return false
         }
     }
 
@@ -121,6 +124,9 @@ struct GrandRevealWindowRootView: View {
             .onAppear {
                 RecentDeckCoordinator.shared.register(model)
             }
+            .onOpenURL { url in
+                model.loadDeck(at: url)
+            }
     }
 }
 
@@ -139,7 +145,9 @@ struct ContentView: View {
                 LaunchPadView(
                     errorMessage: model.errorMessage,
                     onOpenDeck: model.openDeckPicker,
-                    onDropDeck: model.loadDeck
+                    onDropDeck: { url in
+                        model.loadDeck(at: url)
+                    }
                 )
             }
         }
